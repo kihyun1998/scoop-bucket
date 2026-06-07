@@ -1,0 +1,46 @@
+name: auto-update
+
+# just-tic의 최신 릴리스를 폴링해 jtic 매니페스트를 자동 갱신한다.
+# 공개 릴리스 데이터만 읽고(인증 불필요) 이 레포 자신의 토큰으로 커밋하므로 PAT가 필요 없다.
+on:
+  schedule:
+    - cron: "0 * * * *" # 매시 정각
+  workflow_dispatch: {} # 수동 실행 버튼
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Update jtic manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          latest=$(gh api repos/kihyun1998/just-tic/releases/latest --jq .tag_name)
+          v="${latest#v}"
+          cur=$(jq -r .version bucket/jtic.json)
+          if [ "$v" = "$cur" ]; then
+            echo "이미 최신 ($cur) — 변경 없음"
+            exit 0
+          fi
+          echo "갱신: $cur -> $v"
+          url="https://github.com/kihyun1998/just-tic/releases/download/v$v/jtic-v$v-x86_64-pc-windows-msvc.zip"
+          tmp=$(mktemp)
+          curl -sSL "$url" -o "$tmp"
+          hash=$(sha256sum "$tmp" | cut -d' ' -f1)
+          jq --arg v "$v" --arg url "$url" --arg hash "$hash" --arg ed "jtic-v$v-x86_64-pc-windows-msvc" '
+              .version = $v
+            | .architecture["64bit"].url = $url
+            | .architecture["64bit"].hash = $hash
+            | .architecture["64bit"].extract_dir = $ed
+          ' bucket/jtic.json > bucket/jtic.json.tmp
+          mv bucket/jtic.json.tmp bucket/jtic.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "jtic $v 자동 업데이트"
+          git push
