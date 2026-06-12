@@ -2,6 +2,7 @@
   "version": "0.1.2",
   "description": "GitHub Actions 워크플로가 받아 쓰는 액션을 실행 전에 검사하는 공급망 스캐너",
   "homepage": "https://github.com/kihyun1998/just-shield",
+  "license": "MIT OR Apache-2.0",
   "architecture": {
     "64bit": {
       "url": "https://github.com/kihyun1998/just-shield/releases/download/v0.1.2/just-shield-v0.1.2-x86_64-pc-windows-msvc.zip",
