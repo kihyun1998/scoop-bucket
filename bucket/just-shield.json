@@ -1,17 +1,17 @@
 {
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "GitHub Actions 워크플로가 받아 쓰는 액션을 실행 전에 검사하는 공급망 스캐너",
   "homepage": "https://github.com/kihyun1998/just-shield",
   "architecture": {
     "64bit": {
-      "url": "https://github.com/kihyun1998/just-shield/releases/download/v0.1.1/just-shield-v0.1.1-x86_64-pc-windows-msvc.zip",
-      "hash": "42a1d29c5f86899bcfa20b6427fc91186bec602aef422b7dcf6ede31339c15b0",
-      "extract_dir": "just-shield-v0.1.1-x86_64-pc-windows-msvc"
+      "url": "https://github.com/kihyun1998/just-shield/releases/download/v0.1.2/just-shield-v0.1.2-x86_64-pc-windows-msvc.zip",
+      "hash": "f6b1b73b093c0e368a380e85744d5f7f42005686d77683d68c7d108ecf02c6d8",
+      "extract_dir": "just-shield-v0.1.2-x86_64-pc-windows-msvc"
     },
     "arm64": {
-      "url": "https://github.com/kihyun1998/just-shield/releases/download/v0.1.1/just-shield-v0.1.1-aarch64-pc-windows-msvc.zip",
-      "hash": "234439c461461b870ba76209cebd01e6e8b4883ca2c88a80ea05e1e78926f881",
-      "extract_dir": "just-shield-v0.1.1-aarch64-pc-windows-msvc"
+      "url": "https://github.com/kihyun1998/just-shield/releases/download/v0.1.2/just-shield-v0.1.2-aarch64-pc-windows-msvc.zip",
+      "hash": "8c81bc704b11d326de6fd82cb9afeb68f241fcfa5d0a69bcac0f37e2a14e12c1",
+      "extract_dir": "just-shield-v0.1.2-aarch64-pc-windows-msvc"
     }
   },
   "bin": "just-shield.exe",
