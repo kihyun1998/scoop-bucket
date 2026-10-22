@@ -1,0 +1,36 @@
+{
+  "version": "0.1.0",
+  "description": "본문 첫 줄 Parent: #N 으로 부모를 적는 GitLab 트래커의 이슈 트리 CLI",
+  "homepage": "https://github.com/kihyun1998/gltree",
+  "license": "MIT OR Apache-2.0",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/kihyun1998/gltree/releases/download/v0.1.0/gltree-v0.1.0-x86_64-pc-windows-msvc.zip",
+      "hash": "fee29deec19ae28ff86a8240a53205b8db136d57faa6c084e6612c77f0b6f61e",
+      "extract_dir": "gltree-v0.1.0-x86_64-pc-windows-msvc"
+    },
+    "arm64": {
+      "url": "https://github.com/kihyun1998/gltree/releases/download/v0.1.0/gltree-v0.1.0-aarch64-pc-windows-msvc.zip",
+      "hash": "e7d882361e13c23eeca605761d3a8890abfc125777cc14e40dbb82637d665990",
+      "extract_dir": "gltree-v0.1.0-aarch64-pc-windows-msvc"
+    }
+  },
+  "bin": "gltree.exe",
+  "checkver": "github",
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/kihyun1998/gltree/releases/download/v$version/gltree-v$version-x86_64-pc-windows-msvc.zip",
+        "extract_dir": "gltree-v$version-x86_64-pc-windows-msvc"
+      },
+      "arm64": {
+        "url": "https://github.com/kihyun1998/gltree/releases/download/v$version/gltree-v$version-aarch64-pc-windows-msvc.zip",
+        "extract_dir": "gltree-v$version-aarch64-pc-windows-msvc"
+      }
+    },
+    "hash": {
+      "url": "https://github.com/kihyun1998/gltree/releases/download/v$version/SHA256SUMS",
+      "regex": "$sha256\\s+$basename"
+    }
+  }
+}
