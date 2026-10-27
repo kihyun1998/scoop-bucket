@@ -1,0 +1,36 @@
+name: test-install
+
+# 매니페스트가 실제로 설치되는지 Windows 러너에서 검증한다.
+# 매니페스트 변경 푸시마다 + 수동 실행. scoop이 해시를 검증하므로
+# 이 테스트의 초록불 = "URL·해시·바이너리 전부 정상".
+on:
+  push:
+    paths: ["bucket/**"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  just-fetch:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [windows-latest, windows-11-arm]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: scoop install + smoke test
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Invoke-RestMethod -Uri https://get.scoop.sh -OutFile install-scoop.ps1
+          ./install-scoop.ps1 -RunAsAdmin
+          $env:PATH = "$env:USERPROFILE\scoop\shims;$env:PATH"
+          scoop bucket add kihyun1998 https://github.com/kihyun1998/scoop-bucket
+          scoop install kihyun1998/just-fetch
+          if ($LASTEXITCODE -ne 0) { throw "scoop install failed" }
+          $version = just-fetch --version
+          if ($version -notmatch '^just-fetch ') { throw "--version printed '$version'" }
+          New-Item -ItemType Directory empty | Out-Null
+          just-fetch empty
+          if ($LASTEXITCODE -ne 0) { throw "just-fetch exited $LASTEXITCODE" }
