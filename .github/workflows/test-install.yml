@@ -34,3 +34,21 @@ jobs:
           New-Item -ItemType Directory empty | Out-Null
           just-fetch empty
           if ($LASTEXITCODE -ne 0) { throw "just-fetch exited $LASTEXITCODE" }
+
+  clch:
+    runs-on: windows-latest
+    steps:
+      - name: scoop install + smoke test
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Invoke-RestMethod -Uri https://get.scoop.sh -OutFile install-scoop.ps1
+          ./install-scoop.ps1 -RunAsAdmin
+          $env:PATH = "$env:USERPROFILE\scoop\shims;$env:PATH"
+          scoop bucket add kihyun1998 https://github.com/kihyun1998/scoop-bucket
+          scoop install kihyun1998/clch
+          if ($LASTEXITCODE -ne 0) { throw "scoop install failed" }
+          $version = clch --version
+          if ($version -notmatch '^clch ') { throw "--version printed '$version'" }
+          clch roots --help | Out-Null
+          if ($LASTEXITCODE -ne 0) { throw "clch exited $LASTEXITCODE" }
